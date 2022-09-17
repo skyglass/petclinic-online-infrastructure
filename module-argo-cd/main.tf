@@ -27,7 +27,7 @@ resource "kubernetes_namespace" "argo-ns" {
 }
 
 resource "helm_release" "argocd" {
-  name       = "msur"
+  name       = "petclinic-online"
   chart      = "argo-cd"
   repository = "https://argoproj.github.io/argo-helm"
   namespace  = "argocd"
