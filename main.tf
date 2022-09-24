@@ -42,7 +42,7 @@ module "aws-kubernetes-cluster" {
   aws_region                 = local.aws_region
   cluster_name               = local.k8s_cluster_name
   vpc_id                     = module.aws-network.vpc_id
-  cluster_subnet_ids         = module.aws-network.subnet_ids
+  cluster_subnet_ids         = module.aws-network.public_subnet_ids
 
   nodegroup_subnet_ids     = module.aws-network.private_subnet_ids
   nodegroup_disk_size      = "20"
