@@ -11,4 +11,13 @@ terraform {
       version = "~> 2.13.1"
     }    
   }
+  # Adding Backend as S3 for Remote State Storage
+  backend "s3" {
+    bucket = "skyglass-terraform-on-aws-eks"
+    key    = "dev/app1k8s/terraform.tfstate"
+    region = "eu-central-1" 
+
+    # For State Locking
+    dynamodb_table = "skyglass-dev-app1k8s"    
+  }   
 }
