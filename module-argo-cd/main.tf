@@ -1,24 +1,40 @@
+# provider "kubernetes" {
+#   cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
+#   host                   = var.kubernetes_cluster_endpoint
+#   exec {
+#     api_version = "client.authentication.k8s.io/v1beta1"
+#     command     = "aws"
+#     args        = ["eks", "get-token", "--cluster-name", "${var.kubernetes_cluster_name}"]
+#   }
+# }
+
+# Terraform Kubernetes Provider
 provider "kubernetes" {
+  host = var.kubernetes_cluster_endpoint 
   cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
-  host                   = var.kubernetes_cluster_endpoint
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    args        = ["eks", "get-token", "--cluster-name", "${var.kubernetes_cluster_name}"]
+  token = var.var.kubernetes_cluster_name
+}
+
+# HELM Provider
+provider "helm" {
+  kubernetes {
+    host                   = var.kubernetes_cluster_endpoint
+    cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
+    token                  = var.kubernetes_cluster_name
   }
 }
 
-provider "helm" {
-  kubernetes {
-    cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
-    host                   = var.kubernetes_cluster_endpoint
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", "${var.kubernetes_cluster_name}"]
-    }
-  }
-}
+# provider "helm" {
+#   kubernetes {
+#     cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
+#     host                   = var.kubernetes_cluster_endpoint
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       command     = "aws"
+#       args        = ["eks", "get-token", "--cluster-name", "${var.kubernetes_cluster_name}"]
+#     }
+#   }
+# }
 
 resource "kubernetes_namespace" "argo-ns" {
   metadata {
