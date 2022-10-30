@@ -1,6 +1,7 @@
 
 # Resource: Create AWS Load Balancer Controller IAM Policy 
 resource "aws_iam_policy" "lbc_iam_policy" {
+  depends_on = [var.lbc_depends_on]  
   name        = "${local.name}-AWSLoadBalancerControllerIAMPolicy"
   path        = "/"
   description = "AWS Load Balancer Controller IAM Policy"
@@ -13,6 +14,7 @@ output "lbc_iam_policy_arn" {
 
 # Resource: Create IAM Role 
 resource "aws_iam_role" "lbc_iam_role" {
+  depends_on = [var.lbc_depends_on]
   name = "${local.name}-lbc-iam-role"
 
   # Terraform's "jsonencode" function converts a Terraform expression result to valid JSON syntax.
@@ -43,6 +45,7 @@ resource "aws_iam_role" "lbc_iam_role" {
 
 # Associate Load Balanacer Controller IAM Policy to  IAM Role
 resource "aws_iam_role_policy_attachment" "lbc_iam_role_policy_attach" {
+  depends_on = [var.lbc_depends_on]    
   policy_arn = aws_iam_policy.lbc_iam_policy.arn 
   role       = aws_iam_role.lbc_iam_role.name
 }

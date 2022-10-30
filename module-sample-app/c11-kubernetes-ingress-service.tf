@@ -1,5 +1,6 @@
 # Kubernetes Service Manifest (Type: Load Balancer)
 resource "kubernetes_ingress_v1" "ingress" {
+  depends_on = [aws_acm_certificate.acm_cert]
   metadata {
     name = "ingress-externaldns-demo"
     annotations = {
@@ -26,14 +27,14 @@ resource "kubernetes_ingress_v1" "ingress" {
       # SSL Redirect Setting
       "alb.ingress.kubernetes.io/ssl-redirect" = 443
       # External DNS - For creating a Record Set in Route53
-      "external-dns.alpha.kubernetes.io/hostname" = "app.greeta.net"
+      "external-dns.alpha.kubernetes.io/hostname" = "irynafen.greeta.net"
     }    
   }
   spec {
     ingress_class_name = "my-aws-ingress-class" # Ingress Class            
     default_backend {
       service {
-        name = kubernetes_service_v1.myapp3_np_service.metadata[0].name
+        name = kubernetes_service_v1.usermgmt_np_service.metadata[0].name
         port {
           number = 80
         }
@@ -51,7 +52,7 @@ resource "kubernetes_ingress_v1" "ingress" {
               }
             }
           }
-          path = "/app1"
+          path = "/app1/*"
           path_type = "Prefix"
         }
 
@@ -64,9 +65,9 @@ resource "kubernetes_ingress_v1" "ingress" {
               }
             }
           }
-          path = "/app2"
+          path = "/app2/*"
           path_type = "Prefix"
-        }
+        }       
 
         path {
           backend {
@@ -77,7 +78,7 @@ resource "kubernetes_ingress_v1" "ingress" {
               }
             }
           }
-          path = "/user-mgmt"
+          path = "/*"
           path_type = "Prefix"
         }
 

@@ -1,5 +1,6 @@
 # Resource: MySQL Kubernetes Deployment
 resource "kubernetes_deployment_v1" "mysql_deployment" {
+  depends_on = [kubernetes_persistent_volume_claim_v1.pvc]  
   metadata {
     name = "mysql"
   }

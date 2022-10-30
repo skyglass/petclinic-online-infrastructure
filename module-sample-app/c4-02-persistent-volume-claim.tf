@@ -1,5 +1,6 @@
 # Resource: Persistent Volume Claim
 resource "kubernetes_persistent_volume_claim_v1" "pvc" {
+  depends_on = [var.sample_app_depends_on]  
   metadata {
     name = "ebs-mysql-pv-claim"
   }

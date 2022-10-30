@@ -26,9 +26,6 @@ terraform {
     bucket = "skyglass-petclinic"
     key    = "dev/petclinic/terraform.tfstate"
     region = "eu-central-1" 
- 
-    # For State Locking
-    dynamodb_table = "skyglass-petclinic"    
   }  
 }
 

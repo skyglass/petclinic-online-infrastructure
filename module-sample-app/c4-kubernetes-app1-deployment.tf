@@ -1,5 +1,6 @@
 # Kubernetes Deployment Manifest
 resource "kubernetes_deployment_v1" "myapp1" {
+  depends_on = [kubernetes_persistent_volume_claim_v1.pvc]  
   metadata {
     name = "app1-nginx-deployment"
     labels = {

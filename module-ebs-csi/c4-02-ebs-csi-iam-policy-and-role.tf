@@ -3,18 +3,16 @@
 
 # Resource: Create EBS CSI IAM Policy 
 resource "aws_iam_policy" "ebs_csi_iam_policy" {
+  depends_on = [var.ebs_csi_depends_on]
   name        = "${local.name}-AmazonEKS_EBS_CSI_Driver_Policy"
   path        = "/"
   description = "EBS CSI IAM Policy"
   policy = data.http.ebs_csi_iam_policy.response_body
 }
 
-output "ebs_csi_iam_policy_arn" {
-  value = aws_iam_policy.ebs_csi_iam_policy.arn 
-}
-
 # Resource: Create IAM Role and associate the EBS IAM Policy to it
 resource "aws_iam_role" "ebs_csi_iam_role" {
+  depends_on = [var.ebs_csi_depends_on]  
   name = "${local.name}-ebs-csi-iam-role"
 
   # Terraform's "jsonencode" function converts a Terraform expression result to valid JSON syntax.
@@ -45,6 +43,7 @@ resource "aws_iam_role" "ebs_csi_iam_role" {
 
 # Associate EBS CSI IAM Policy to EBS CSI IAM Role
 resource "aws_iam_role_policy_attachment" "ebs_csi_iam_role_policy_attach" {
+  depends_on = [var.ebs_csi_depends_on]
   policy_arn = aws_iam_policy.ebs_csi_iam_policy.arn 
   role       = aws_iam_role.ebs_csi_iam_role.name
 }

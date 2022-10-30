@@ -8,11 +8,16 @@
 #   }
 # }
 
+# Datasource: EKS Cluster Authentication
+data "aws_eks_cluster_auth" "cluster" {
+  name = var.kubernetes_cluster_id
+}
+
 # Terraform Kubernetes Provider
 provider "kubernetes" {
   host = var.kubernetes_cluster_endpoint 
   cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
-  token = var.var.kubernetes_cluster_name
+  token = data.aws_eks_cluster_auth.cluster.token
 }
 
 # HELM Provider
@@ -20,7 +25,7 @@ provider "helm" {
   kubernetes {
     host                   = var.kubernetes_cluster_endpoint
     cluster_ca_certificate = base64decode(var.kubernetes_cluster_cert_data)
-    token                  = var.kubernetes_cluster_name
+    token                  = data.aws_eks_cluster_auth.cluster.token
   }
 }
 

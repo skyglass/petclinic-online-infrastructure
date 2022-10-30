@@ -1,5 +1,6 @@
 # Resource: Create External DNS IAM Policy 
 resource "aws_iam_policy" "externaldns_iam_policy" {
+  depends_on = [kubernetes_ingress_class_v1.ingress_class_default]
   name        = "${local.name}-AllowExternalDNSUpdates"
   path        = "/"
   description = "External DNS IAM Policy"
@@ -31,6 +32,7 @@ resource "aws_iam_policy" "externaldns_iam_policy" {
 
 # Resource: Create IAM Role 
 resource "aws_iam_role" "externaldns_iam_role" {
+  depends_on = [kubernetes_ingress_class_v1.ingress_class_default]  
   name = "${local.name}-externaldns-iam-role"
 
   # Terraform's "jsonencode" function converts a Terraform expression result to valid JSON syntax.
@@ -61,11 +63,7 @@ resource "aws_iam_role" "externaldns_iam_role" {
 
 # Associate External DNS IAM Policy to IAM Role
 resource "aws_iam_role_policy_attachment" "externaldns_iam_role_policy_attach" {
+  depends_on = [kubernetes_ingress_class_v1.ingress_class_default]  
   policy_arn = aws_iam_policy.externaldns_iam_policy.arn 
   role       = aws_iam_role.externaldns_iam_role.name
-}
-
-output "externaldns_iam_role_arn" {
-  description = "External DNS IAM Role ARN"
-  value = aws_iam_role.externaldns_iam_role.arn
 }

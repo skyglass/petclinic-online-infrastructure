@@ -37,3 +37,20 @@ variable "aws_iam_openid_connect_provider_arn" {
 variable "aws_iam_openid_connect_provider_extract_from_arn" {
   type = string
 }
+
+variable "ebs_csi_iam_role_arn" {
+  type = string
+}
+
+variable "ebs_csi_driver_id" {
+  type = string
+}
+
+variable "node_group_public_id" {
+  type = string
+}
+
+variable "lbc_depends_on" {
+  type    = any
+  default = []
+}

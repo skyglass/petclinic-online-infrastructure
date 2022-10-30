@@ -53,7 +53,7 @@ output "cluster_version" {
 
 output "cluster_token" {
   description = "Token for the EKS cluster."
-  value       = aws_eks_cluster.eks_cluster.token
+  value       = aws_eks_cluster.eks_cluster.name
 }
 
 output "cluster_iam_role_name" {
@@ -106,5 +106,5 @@ output "aws_iam_openid_connect_provider_arn" {
 # Output: AWS IAM Open ID Connect Provider
 output "aws_iam_openid_connect_provider_extract_from_arn" {
   description = "AWS IAM Open ID Connect Provider extract from ARN"
-   value = local.aws_iam_oidc_connect_provider_extract_from_arn
+   value = element(split("oidc-provider/", "${aws_iam_openid_connect_provider.oidc_provider.arn}"), 1)
 }

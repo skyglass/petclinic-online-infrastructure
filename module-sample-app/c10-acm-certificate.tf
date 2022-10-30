@@ -1,5 +1,6 @@
 # Resource: ACM Certificate
 resource "aws_acm_certificate" "acm_cert" {
+  depends_on = [kubernetes_service_v1.usermgmt_np_service]
   domain_name       = "*.greeta.net"
   validation_method = "DNS"
 
