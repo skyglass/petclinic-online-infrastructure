@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movies-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movies-ui
+  template:
+    metadata:
+      labels:
+        app: movies-ui
+        version: v1
+    spec:
+      containers:
+      - name: movies-ui
+        image: skyglass/movies-ui:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "200Mi"
+          limits:
+            memory: "400Mi"            
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movies-ui
+spec:
+  selector:
+    app: movies-ui
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80 

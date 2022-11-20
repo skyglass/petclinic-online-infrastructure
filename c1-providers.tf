@@ -21,11 +21,12 @@ terraform {
       version = "~> 2.13.1"
     }    
   }
+
   # Adding Backend as S3 for Remote State Storage
   backend "s3" {
-    bucket = "skyglass-petclinic"
-    key    = "dev/petclinic/terraform.tfstate"
-    region = "eu-central-1" 
+    bucket = "skyglass-movies"
+    key    = "dev/movies/terraform.tfstate"
+    region = "eu-central-1"
   }  
 }
 

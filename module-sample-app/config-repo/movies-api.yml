@@ -1,0 +1,98 @@
+api:
+
+  common:
+    version: 1.0.0
+    title: Sample API
+    description: Description of the API...
+    termsOfServiceUrl: MINE TERMS OF SERVICE URL
+    license: License
+    licenseUrl: MY LICENSE URL
+
+    contact:
+      name: Contact
+      url: My
+      email: me@mail.com
+
+server.port: 7004
+server.error.include-message: always
+server.servlet.context-path: /movies-api
+
+spring.application.name: movies-api
+spring.data.mongodb:
+  host: localhost
+  port: 27017
+  database: moviesdb
+
+app:
+  cors:
+    allowed-origins: https://movie.greeta.net/ui
+
+management:
+  endpoints:
+    web:
+      exposure.include: beans, env, health, info, metrics, mappings
+  endpoint:
+    health:
+      show-details: ALWAYS
+  server:
+    port: 4004
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+springdoc:
+  show-actuator: false
+  swagger-ui:
+    groups-order: DESC
+    disable-swagger-default-url: true
+
+keycloak:
+  auth-server-url: https://movie.greeta.net
+  realm: company-services
+  resource: movies-app
+  ssl-required: external
+  principal-attribute: preferred_username
+  use-resource-role-mappings: true
+
+keycloak-ext:
+  redirect-url: https://movie.greeta.net/ui/*
+
+
+jwt:
+  auth:
+    converter:
+      resource-id: movies-app
+      principal-attribute: preferred_username
+
+
+main:
+  allow-circular-references: true
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuer-uri: https://movie.greeta.net/realms/company-services
+        jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+app.product-service.timeoutSec: 2
+
+---
+spring.config.activate.on-profile: docker
+
+spring.data.mongodb.host: mongodb
+
+server.port: 80
+
+---
+spring.config.activate.on-profile: prod
+
+spring.data.mongodb.host: mongodb
+
+logging:
+  level:
+    root: INFO
+    skyglass.composer: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.boot.autoconfigure: DEBUG    
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: WARN

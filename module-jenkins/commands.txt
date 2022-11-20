@@ -1,0 +1,5 @@
+terraform apply -var-file="vars/dev-eu-central-1.tfvars"
+
+chmod 400 <keypair>
+ssh -i <keypair> ec2-user@<public_dns>
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
