@@ -1,10 +1,10 @@
 # Resource: Kubernetes Service Manifest (Type: NodePort)
 resource "kubernetes_service_v1" "usermgmt_np_service" {
-  depends_on = [kubernetes_deployment_v1.usermgmt_webapp]  
+  depends_on = [var.sample_app_depends_on]  
   metadata {
     name = "usermgmt-webapp-nodeport-service"
     annotations = {
-      "alb.ingress.kubernetes.io/healthcheck-path" = "/users/health-status"
+      "alb.ingress.kubernetes.io/healthcheck-path" = "/login"
     }    
   }
   spec {
@@ -13,8 +13,8 @@ resource "kubernetes_service_v1" "usermgmt_np_service" {
     }
     port {
       name        = "http"
-      port        = 80
-      target_port = 80
+      port        = 8080
+      target_port = 8080
     }
 
     type = "NodePort"

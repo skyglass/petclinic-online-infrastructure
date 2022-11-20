@@ -1,6 +1,6 @@
 # Resource: MySQL Cluster IP Service
 resource "kubernetes_service_v1" "mysql_clusterip_service" {
-  depends_on = [kubernetes_persistent_volume_claim_v1.pvc]  
+  depends_on = [var.sample_app_depends_on]  
   metadata {
     name = "mysql"
   }

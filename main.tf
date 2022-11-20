@@ -111,9 +111,13 @@ module "sample-app" {
                                                       module.ebs-csi.ebs_csi_iam_role_policy_attach,
                                                       module.ebs-csi.ebs_csi_iam_policy_arn,         
                                                       module.load-balancer.lbc_controller_id,
+                                                      module.load-balancer.lbc_iam_role_arn,
+                                                      module.load-balancer.lbc_iam_policy_arn, 
+                                                      module.load-balancer.lbc_iam_role_policy_attach,                                                                                                                
                                                       module.load-balancer.externaldns_iam_policy_arn,
                                                       module.load-balancer.externaldns_iam_role_arn,
-                                                      module.load-balancer.externaldns_id
+                                                      module.load-balancer.externaldns_id,
+                                                      module.load-balancer.externaldns_iam_role_policy_attach
                                                      ]
 }
 

@@ -1,6 +1,6 @@
 # Kubernetes Service Manifest (Type: Node Port Service)
 resource "kubernetes_service_v1" "myapp2_np_service" {
-  depends_on = [kubernetes_persistent_volume_claim_v1.pvc]  
+  depends_on = [kubernetes_persistent_volume_claim_v1.pvc]    
   metadata {
     name = "app2-nginx-nodeport-service"
     annotations = {

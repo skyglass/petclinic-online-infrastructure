@@ -1,6 +1,6 @@
 # Resource: UserMgmt WebApp Kubernetes Deployment
 resource "kubernetes_deployment_v1" "usermgmt_webapp" {
-  depends_on = [kubernetes_service_v1.mysql_clusterip_service]  
+  depends_on = [var.sample_app_depends_on]  
   metadata {
     name = "usermgmt-webapp"
     labels = {

@@ -20,6 +20,7 @@ resource "kubernetes_ingress_v1" "ingress" {
       ## SSL Settings
       # Option-1: Using Terraform jsonencode Function
       "alb.ingress.kubernetes.io/listen-ports" = jsonencode([{"HTTPS" = 443}, {"HTTP" = 80}])
+      # "alb.ingress.kubernetes.io/actions.ssl-redirect" = jsonencode({"Type" = "redirect", "RedirectConfig" = { "Protocol" = "HTTPS", "Port" = "443", "StatusCode" = "HTTP_301"}})
       # Option-2: Using Terraform File Function      
       #"alb.ingress.kubernetes.io/listen-ports" = file("${path.module}/listen-ports/listen-ports.json")
       "alb.ingress.kubernetes.io/certificate-arn" =  "${aws_acm_certificate.acm_cert.arn}"
@@ -27,19 +28,20 @@ resource "kubernetes_ingress_v1" "ingress" {
       # SSL Redirect Setting
       "alb.ingress.kubernetes.io/ssl-redirect" = 443
       # External DNS - For creating a Record Set in Route53
-      "external-dns.alpha.kubernetes.io/hostname" = "irynafen.greeta.net"
+      "external-dns.alpha.kubernetes.io/hostname" = "sonia.greeta.net"
+      "ingress.kubernetes.io/rewrite-target" = "/"
     }    
   }
   spec {
-    ingress_class_name = "my-aws-ingress-class" # Ingress Class            
+    ingress_class_name = "my-aws-ingress-class" # Ingress Class 
     default_backend {
       service {
         name = kubernetes_service_v1.usermgmt_np_service.metadata[0].name
         port {
-          number = 80
+          number = 8080
         }
       }
-    }
+    }               
 
     rule {
       http {
@@ -52,7 +54,7 @@ resource "kubernetes_ingress_v1" "ingress" {
               }
             }
           }
-          path = "/app1/*"
+          path = "/app1"
           path_type = "Prefix"
         }
 
@@ -65,7 +67,7 @@ resource "kubernetes_ingress_v1" "ingress" {
               }
             }
           }
-          path = "/app2/*"
+          path = "/app2"
           path_type = "Prefix"
         }       
 
@@ -74,11 +76,11 @@ resource "kubernetes_ingress_v1" "ingress" {
             service {
               name = kubernetes_service_v1.usermgmt_np_service.metadata[0].name
               port {
-                number = 80
+                number = 8080
               }
             }
           }
-          path = "/*"
+          path = "/"
           path_type = "Prefix"
         }
 

@@ -8,10 +8,6 @@ resource "aws_iam_policy" "lbc_iam_policy" {
   policy = data.http.lbc_iam_policy.response_body
 }
 
-output "lbc_iam_policy_arn" {
-  value = aws_iam_policy.lbc_iam_policy.arn 
-}
-
 # Resource: Create IAM Role 
 resource "aws_iam_role" "lbc_iam_role" {
   depends_on = [var.lbc_depends_on]
@@ -48,10 +44,5 @@ resource "aws_iam_role_policy_attachment" "lbc_iam_role_policy_attach" {
   depends_on = [var.lbc_depends_on]    
   policy_arn = aws_iam_policy.lbc_iam_policy.arn 
   role       = aws_iam_role.lbc_iam_role.name
-}
-
-output "lbc_iam_role_arn" {
-  description = "AWS Load Balancer Controller IAM Role ARN"
-  value = aws_iam_role.lbc_iam_role.arn
 }
 
