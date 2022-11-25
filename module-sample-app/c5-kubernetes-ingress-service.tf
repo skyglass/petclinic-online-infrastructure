@@ -28,8 +28,8 @@ resource "kubernetes_ingress_v1" "ingress" {
       # SSL Redirect Setting
       "alb.ingress.kubernetes.io/ssl-redirect" = 443
       # External DNS - For creating a Record Set in Route53
-      "external-dns.alpha.kubernetes.io/hostname" = "movie.greeta.net"
-      "ingress.kubernetes.io/rewrite-target" = "/"
+      "external-dns.alpha.kubernetes.io/hostname" = "iryna.greeta.net"
+      "ingress.kubernetes.io/rewrite-target" = "/$1"
     }    
   }
   spec {
@@ -37,47 +37,22 @@ resource "kubernetes_ingress_v1" "ingress" {
     default_backend {
      
       service {
-        name = kubernetes_service_v1.keycloak_service.metadata[0].name
+        name = kubernetes_service_v1.petclinic_online_service.metadata[0].name
         port {
-          number = 8080
+          number = 80
         }
       }
     }               
 
     rule {
-      http {
-        path {
-          backend {
-            service {
-              name = "movies-api"
-              port {
-                number = 8080
-              }
-            }
-          }
-          path = "/api"
-          path_type = "Prefix"
-        }
+      http {       
 
         path {
           backend {
             service {
-              name = kubernetes_service_v1.movies_ui_service.metadata[0].name
+              name = kubernetes_service_v1.petclinic_online_service.metadata[0].name
               port {
                 number = 80
-              }
-            }
-          }
-          path = "/ui"
-          path_type = "Prefix"
-        }         
-
-        path {
-          backend {
-            service {
-              name = kubernetes_service_v1.keycloak_service.metadata[0].name
-              port {
-                number = 8080
               }
             }
           }

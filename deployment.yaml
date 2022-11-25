@@ -1,0 +1,40 @@
+#Deployment
+###controllers/pb-deploy.tml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+  minReadySeconds: 5
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: petclinic-online
+  template:
+    metadata:
+      labels:
+        app: petclinic-online
+    spec:
+      containers:
+      - name: petclinic-container
+        image: "skyglass/petclinic-online:7947fa04"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: '1'
+            memory: '1G'
+          requests:
+            cpu: '1'
+            memory: '1G'
+        ports:
+        - containerPort: 8080
+          hostPort: 8080
+      imagePullSecrets:
+      - name: regcred
+
+
+

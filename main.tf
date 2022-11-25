@@ -1,16 +1,9 @@
-# module "aws-network" {
-#   source = "./module-aws-network"
-# 
-#   env_name              = local.env_name
-#   vpc_name              = "petclinic-online-VPC"
-#  cluster_name          = local.k8s_cluster_name
-#  aws_region            = local.aws_region
-#  main_vpc_cidr         = "10.10.0.0/16"
-#  public_subnet_a_cidr  = "10.10.0.0/18"
-#  public_subnet_b_cidr  = "10.10.64.0/18"
-#  private_subnet_a_cidr = "10.10.128.0/18"
-#  private_subnet_b_cidr = "10.10.192.0/18"
-#}
+module "jenkins" {
+  source = "./module-jenkins"
+
+  aws_region                 = var.aws_region
+  key_name                   = "skyglass-key"
+}
 
 module "kubernetes-cluster" {
   source = "./module-eks-cluster"
@@ -26,31 +19,7 @@ module "kubernetes-cluster" {
   nodegroup_max_size         = 5
 }
 
-# Create namespace
-# Use kubernetes provider to work with the kubernetes cluster API
 
-# provider "kubernetes" {
-#   host = module.kubernetes-cluster.cluster_endpoint 
-#   cluster_ca_certificate = base64decode(module.kubernetes-cluster.cluster_certificate_authority_data)
-#   token = module.kubernetes-cluster.cluster_token
-# }
-
-# Create a namespace for petclinic-online microservice pods
-# resource "kubernetes_namespace" "petclinic-online-namespace" {
-#   metadata {
-#     name = "petclinic-online"
-#   }
-# }
-
-# module "argo-cd-server" {
-#   source                       = "./module-argo-cd"
-
-#   aws_region                   = var.aws_region
-#   kubernetes_cluster_id        = module.kubernetes-cluster.cluster_id
-#   kubernetes_cluster_name      = module.kubernetes-cluster.cluster_token
-#   kubernetes_cluster_cert_data = module.kubernetes-cluster.cluster_certificate_authority_data
-#   kubernetes_cluster_endpoint  = module.kubernetes-cluster.cluster_endpoint
-# }
 
 module "ebs-csi" {
   source                                           = "./module-ebs-csi"

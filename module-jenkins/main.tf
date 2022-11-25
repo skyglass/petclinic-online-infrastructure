@@ -6,19 +6,11 @@ provider "aws" {
   region = var.aws_region
 }
 
-variable "aws_region" {
-    type = string
-}
-
-variable "key_name" {
-    type = string
-}
-
 
 resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins_sg"
   description = "Allow Jenkins Traffic"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = module.jenkins_vpc.vpc_id
 
   ingress {
     description      = "Allow from Personal CIDR block"
@@ -118,9 +110,9 @@ resource "aws_instance" "web" {
   instance_type   = "t2.xlarge" 
   key_name        = var.key_name
   iam_instance_profile = "${aws_iam_instance_profile.test_profile.name}"
-  subnet_id       = element(module.vpc.public_subnets, 0)
+  subnet_id       = element(module.jenkins_vpc.public_subnets, 0)
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
-  user_data       = "${file("install_jenkins.sh")}"
+  user_data       = "${file("module-jenkins/install_jenkins.sh")}"
   tags = {
     Name = "Jenkins"
   }
